@@ -8,7 +8,6 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "animals")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class Animal {
 
