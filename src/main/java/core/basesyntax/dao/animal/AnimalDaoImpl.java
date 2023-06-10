@@ -19,7 +19,9 @@ public class AnimalDaoImpl extends AbstractDao implements AnimalDao {
     @Override
     public Animal save(Animal animal) {
         Transaction transaction = null;
-        try (Session session = sessionFactory.getSessionFactory().openSession()) {
+        Session session = null;
+        try {
+            session = sessionFactory.getSessionFactory().openSession();
             transaction = session.beginTransaction();
             session.save(animal);
             transaction.commit();
@@ -29,6 +31,10 @@ public class AnimalDaoImpl extends AbstractDao implements AnimalDao {
                 transaction.rollback();
             }
             throw new DataProcessingException("Can't insert animal " + animal, e);
+        } finally {
+            if (session != null) {
+                session.close();
+            }
         }
     }
 
